@@ -1,0 +1,5 @@
+{
+  "name": "Party Room Decorator AI",
+  "description": "Upload a photo of your room, describe a party theme, and let AI decorate it for you. Refine the design with simple prompts and generate a shopping list with online sources to make it a reality.",
+  "requestFramePermissions": []
+}
