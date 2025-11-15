@@ -93,14 +93,14 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-brand-background text-brand-text-primary font-sans">
       <Header />
-      <main className="p-4 sm:p-6 md:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
-          <div className="flex flex-col gap-6">
-            <h2 className="text-2xl font-bold text-brand-text-primary">Controls</h2>
+      <main className="p-3 sm:p-4 md:p-6 lg:p-8 pb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 max-w-7xl mx-auto">
+          <div className="flex flex-col gap-4 sm:gap-6 order-2 lg:order-1">
+            <h2 className="text-xl sm:text-2xl font-bold text-brand-text-primary">Controls</h2>
             {error && (
-              <div className="bg-red-500/10 border border-red-500/50 text-red-700 p-3 rounded-lg">
-                <p className="font-bold">An Error Occurred</p>
-                <p>{error}</p>
+              <div className="bg-red-500/10 border border-red-500/50 text-red-700 p-3 rounded-lg animate-slide-up">
+                <p className="font-bold text-sm sm:text-base">An Error Occurred</p>
+                <p className="text-sm">{error}</p>
               </div>
             )}
             {!originalImage ? (
@@ -116,7 +116,7 @@ const App: React.FC = () => {
               />
             )}
           </div>
-          <div>
+          <div className="order-1 lg:order-2">
             <ImageViewer
               originalImage={originalImage?.base64 || null}
               generatedImage={generatedImage}
