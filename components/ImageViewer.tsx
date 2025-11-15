@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { LoadingSpinner } from './IconComponents';
 
@@ -29,7 +28,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({ originalImage, generat
             {isLoading && (
                 <div className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center z-10 transition-opacity">
                     <LoadingSpinner className="w-12 h-12 text-brand-primary" />
-                    <p className="mt-4 text-lg font-medium text-brand-text-primary">{loadingMessage}</p>
+                    <p className="mt-4 text-lg font-medium text-white">{loadingMessage}</p>
                 </div>
             )}
             {!originalImage && !isLoading && (
@@ -43,24 +42,18 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({ originalImage, generat
             )}
         </div>
         {generatedImage && (
-            <div className="mt-4 flex items-center justify-center gap-4 bg-brand-surface p-2 rounded-lg">
-                <span className={`px-3 py-1 transition-colors ${showOriginal ? 'text-brand-text-secondary' : 'text-brand-text-primary font-semibold'}`}>After</span>
-                <label htmlFor="toggle" className="flex items-center cursor-pointer">
-                    <div className="relative">
-                        <input id="toggle" type="checkbox" className="sr-only" checked={showOriginal} onChange={() => setShowOriginal(!showOriginal)} />
-                        <div className="block bg-gray-600 w-14 h-8 rounded-full"></div>
-                        <div className="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
+             <div className="mt-4 flex items-center justify-center">
+                <label htmlFor="toggle" className="flex items-center cursor-pointer group bg-brand-surface p-2 rounded-lg">
+                    <input id="toggle" type="checkbox" className="sr-only peer" checked={!showOriginal} onChange={() => setShowOriginal(!showOriginal)} />
+                    <span className="px-3 py-1 transition-colors text-brand-text-primary font-semibold peer-checked:text-brand-text-secondary peer-checked:font-normal">Before</span>
+                    <div className="relative mx-2">
+                        <div className="block bg-brand-secondary/40 w-14 h-8 rounded-full peer-checked:bg-brand-primary/60 transition-colors"></div>
+                        <div className="absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform peer-checked:translate-x-full peer-checked:bg-brand-secondary"></div>
                     </div>
+                    <span className="px-3 py-1 transition-colors text-brand-text-secondary peer-checked:text-brand-text-primary peer-checked:font-semibold">After</span>
                 </label>
-                 <span className={`px-3 py-1 transition-colors ${showOriginal ? 'text-brand-text-primary font-semibold' : 'text-brand-text-secondary'}`}>Before</span>
             </div>
         )}
-        <style>{`
-            input:checked ~ .dot {
-                transform: translateX(100%);
-                background-color: #d97706;
-            }
-        `}</style>
     </div>
   );
 };

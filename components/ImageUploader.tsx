@@ -1,4 +1,3 @@
-
 import React, { useCallback, useState } from 'react';
 import { UploadIcon } from './IconComponents';
 
@@ -44,7 +43,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageSelected })
   };
 
   return (
-    <div className="bg-brand-surface rounded-lg p-6 border-2 border-dashed border-gray-600 hover:border-brand-primary transition-colors duration-300">
+    <div className="bg-brand-surface rounded-lg p-6 border-2 border-dashed border-brand-secondary/50 hover:border-brand-primary transition-colors duration-300">
       <label
         htmlFor="image-upload"
         onDrop={handleDrop}
@@ -53,7 +52,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageSelected })
         onDragLeave={handleDragLeave}
         className={`flex flex-col items-center justify-center text-center p-8 rounded-md cursor-pointer transition-all ${isDragging ? 'bg-brand-primary/10 scale-105' : ''}`}
       >
-        <UploadIcon className="w-12 h-12 text-gray-500 mb-4" />
+        <UploadIcon className="w-12 h-12 text-brand-text-secondary mb-4" />
         <p className="text-lg font-semibold text-brand-text-primary">
           Upload an image of your room
         </p>
@@ -68,7 +67,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageSelected })
           onChange={handleFileChange}
         />
       </label>
-      <p className="text-xs text-gray-500 mt-4 text-center">Supports JPG, PNG, WEBP, etc.</p>
+      <p className="text-xs text-brand-text-secondary mt-4 text-center">Supports JPG, PNG, WEBP, etc.</p>
     </div>
   );
 };

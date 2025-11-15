@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback } from 'react';
 import { Header } from './components/Header';
 import { ImageUploader } from './components/ImageUploader';
@@ -58,49 +57,38 @@ const App: React.FC = () => {
       const imageToEdit = generatedImage || originalImage.base64;
       const newImageBase64 = await editImage(imageToEdit, prompt);
       setGeneratedImage(newImageBase64);
+      
+      setLoadingMessage('Creating your shopping list...');
+      const items = await generateShoppingListItems(originalImage.base64, newImageBase64);
+      setShoppingListItems(items);
+
     } catch (err) {
       console.error(err);
-      setError('Could not generate the image. Please refine your prompt and try again.');
+      setError('Could not generate the image or shopping list. Please refine your prompt and try again.');
     } finally {
       setIsLoading(false);
+      setLoadingMessage('');
     }
   }, [originalImage, generatedImage, prompt]);
-
-  const handleGenerateListItems = useCallback(async () => {
-    if (!originalImage || !generatedImage) return;
-    setError(null);
-    setIsLoading(true);
-    setShoppingListLinks([]);
-    setSources([]);
-    setLoadingMessage('Creating your shopping list...');
-
-    try {
-      const items = await generateShoppingListItems(originalImage.base64, generatedImage);
-      setShoppingListItems(items);
-    } catch (err) {
-      console.error(err);
-      setError('Could not generate the shopping list. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [originalImage, generatedImage]);
   
   const handleFindProductLinks = useCallback(async () => {
     if (!shoppingListItems) return;
     setError(null);
     setIsFindingLinks(true);
-
+    setLoadingMessage('Finding product links...');
     try {
-      const { links, sources: newSources } = await findProductLinks(shoppingListItems, prompt);
-      setShoppingListLinks(links);
-      setSources(newSources);
+        const { links, sources: newSources } = await findProductLinks(shoppingListItems, prompt);
+        setShoppingListLinks(links);
+        setSources(newSources);
     } catch (err) {
         console.error(err);
         setError('Could not find product links. Please try again.');
     } finally {
         setIsFindingLinks(false);
+        setLoadingMessage('');
     }
   }, [shoppingListItems, prompt]);
+
 
   return (
     <div className="min-h-screen bg-brand-background text-brand-text-primary font-sans">
@@ -110,7 +98,7 @@ const App: React.FC = () => {
           <div className="flex flex-col gap-6">
             <h2 className="text-2xl font-bold text-brand-text-primary">Controls</h2>
             {error && (
-              <div className="bg-red-500/20 border border-red-500 text-red-300 p-3 rounded-lg">
+              <div className="bg-red-500/10 border border-red-500/50 text-red-700 p-3 rounded-lg">
                 <p className="font-bold">An Error Occurred</p>
                 <p>{error}</p>
               </div>
@@ -118,35 +106,32 @@ const App: React.FC = () => {
             {!originalImage ? (
               <ImageUploader onImageSelected={handleImageUpload} />
             ) : (
-              <>
-                <PromptControls
-                  prompt={prompt}
-                  setPrompt={setPrompt}
-                  onSubmit={handleSubmitPrompt}
-                  onGenerateList={handleGenerateListItems}
-                  isLoading={isLoading}
-                  isDecorated={!!generatedImage}
-                  imageSelected={!!originalImage}
-                />
-                {(shoppingListItems || shoppingListLinks.length > 0) && (
-                  <ShoppingListDisplay
-                    items={shoppingListItems}
-                    links={shoppingListLinks}
-                    sources={sources}
-                    onFindLinks={handleFindProductLinks}
-                    isFindingLinks={isFindingLinks}
-                  />
-                )}
-              </>
+              <PromptControls
+                prompt={prompt}
+                setPrompt={setPrompt}
+                onSubmit={handleSubmitPrompt}
+                isLoading={isLoading}
+                isDecorated={!!generatedImage}
+                imageSelected={!!originalImage}
+              />
             )}
           </div>
           <div>
             <ImageViewer
               originalImage={originalImage?.base64 || null}
               generatedImage={generatedImage}
-              isLoading={isLoading}
+              isLoading={isLoading || isFindingLinks}
               loadingMessage={loadingMessage}
             />
+             {(shoppingListItems || shoppingListLinks.length > 0) && (
+              <ShoppingListDisplay
+                items={shoppingListItems}
+                links={shoppingListLinks}
+                sources={sources}
+                onFindLinks={handleFindProductLinks}
+                isFindingLinks={isFindingLinks}
+              />
+            )}
           </div>
         </div>
       </main>

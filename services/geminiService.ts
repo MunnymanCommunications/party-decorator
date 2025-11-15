@@ -1,4 +1,3 @@
-
 import { GoogleGenAI, Modality } from "@google/genai";
 import { parseDataUrl } from '../utils/fileUtils';
 import type { Source, ShoppingListItem } from '../types';
@@ -87,13 +86,14 @@ export const generateShoppingListItems = async (
     return list;
 };
 
-// Step 2: Find Amazon links for the items in the list.
+// Step 2: Generate Amazon search URLs for the items in the list.
 export const findProductLinks = async (itemList: string, themePrompt: string): Promise<{ links: ShoppingListItem[]; sources: Source[] }> => {
     const themeContext = themePrompt ? ` The user has specified a theme for the party: "${themePrompt}".` : '';
 
-    const generationPrompt = `For each item in the following shopping list, find a relevant product link exclusively from Amazon.com. The final URL must contain "amazon.com".${themeContext} When searching for products, you MUST incorporate the theme into the search query to find theme-specific items. For example, if the item is "balloons" and the theme is "Halloween", you should search for "Halloween balloons on Amazon".
+    const generationPrompt = `For each item in the following shopping list, generate a concise and effective search query string for Amazon.com.
+${themeContext} When creating the search query, you MUST incorporate the theme. For example, if the item is "string lights" and the theme is "Rustic Wedding", a good search query would be "rustic wedding string lights".
 
-Format the output as a list where each line contains only the item name, a pipe character (|), and then the full URL. Do not include any extra text, titles, or markdown formatting. The URL provided MUST be a valid Amazon.com product link.
+Format the output as a list where each line contains only the original item name, a pipe character (|), and then the generated search query. Do not include any extra text, titles, or markdown formatting.
 
 SHOPPING LIST:
 ${itemList}`;
@@ -101,30 +101,34 @@ ${itemList}`;
     const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash',
         contents: generationPrompt,
-        config: {
-            tools: [{ googleSearch: {} }],
-        },
     });
 
-    const listWithLinksText = response.text;
-    const sources = response.candidates?.[0]?.groundingMetadata?.groundingChunks as Source[] || [];
+    const listWithQueriesText = response.text;
+    
+    // Sources will be empty since we are not using grounding for this step
+    const sources: Source[] = [];
 
-    if (!listWithLinksText) {
-        throw new Error('Could not find product links.');
+    if (!listWithQueriesText) {
+        throw new Error('Could not generate search queries.');
     }
 
-    // Parse the response text into a structured array
-    const links: ShoppingListItem[] = listWithLinksText
+    // Parse the response text and construct Amazon search URLs
+    const links: ShoppingListItem[] = listWithQueriesText
         .split('\n')
         .map(line => line.trim())
         .filter(line => line.includes('|'))
         .map(line => {
             const parts = line.split('|');
             const item = parts[0].trim().replace(/^[\*\-]\s*/, ''); // Also remove potential markdown bullets
-            const url = parts[1].trim();
+            const searchQuery = parts[1].trim();
+            
+            // URL-encode the search query and construct the Amazon URL
+            const encodedQuery = encodeURIComponent(searchQuery);
+            const url = `https://www.amazon.com/s?k=${encodedQuery}`;
+            
             return { item, url };
         })
-        .filter(item => item.item && item.url && item.url.includes('amazon.com'));
+        .filter(item => item.item && item.url);
 
 
     return { links, sources };

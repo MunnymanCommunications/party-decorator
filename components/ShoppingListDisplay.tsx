@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import type { Source, ShoppingListItem } from '../types';
-import { LoadingSpinner, ShareIcon } from './IconComponents';
+import { ShareIcon, LoadingSpinner } from './IconComponents';
 
 interface ShoppingListDisplayProps {
   items: string | null;
@@ -104,29 +103,29 @@ export const ShoppingListDisplay: React.FC<ShoppingListDisplayProps> = ({ items,
           ))}
         </ul>
       ) : (
-        <>
-            <div className="prose prose-invert prose-sm max-w-none text-brand-text-secondary space-y-2">
-                <ul>
-                    {formattedItems}
-                </ul>
-            </div>
-            <div className="mt-6">
-                <button
-                    onClick={onFindLinks}
-                    disabled={isFindingLinks}
-                    className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 border border-brand-secondary text-base font-medium rounded-md shadow-sm text-brand-secondary bg-brand-primary/20 hover:bg-brand-primary/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-brand-background focus:ring-brand-secondary disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                    {isFindingLinks ? (
-                        <>
-                            <LoadingSpinner className="w-5 h-5" />
-                            Searching...
-                        </>
-                    ) : (
-                        'Search for Products on Amazon'
-                    )}
-                </button>
-            </div>
-        </>
+        <div className="prose prose-invert prose-sm max-w-none text-brand-text-secondary space-y-2">
+            <ul>
+                {formattedItems}
+            </ul>
+             {items && links.length === 0 && (
+              <div className="mt-6 text-center not-prose">
+                  <button
+                      onClick={onFindLinks}
+                      disabled={isFindingLinks}
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-brand-primary hover:brightness-95 active:brightness-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-brand-surface focus:ring-brand-primary disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  >
+                      {isFindingLinks ? (
+                          <>
+                              <LoadingSpinner className="w-5 h-5" />
+                              Finding...
+                          </>
+                      ) : (
+                          'Find on Amazon'
+                      )}
+                  </button>
+              </div>
+          )}
+        </div>
       )}
 
       {sources && sources.length > 0 && links.length > 0 && (
