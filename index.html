@@ -5,44 +5,15 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Party Room Decorator AI</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              'brand-primary': '#c0844f', // A pleasant tan color
-              'brand-secondary': '#d4a276', // A lighter tan
-              'brand-background': '#fdfaf6', // Light tan/beige background
-              'brand-surface': '#f8f5f1', // A slightly different off-white for contrast
-              'brand-text-primary': '#5f442c', // A rich, dark brown
-              'brand-text-secondary': '#8c7664', // A muted, softer brown
-            },
-            animation: {
-              'fade-in': 'fadeIn 0.5s ease-in-out',
-              'fade-in-down': 'fadeInDown 0.3s ease-in-out',
-            },
-            keyframes: {
-              fadeIn: {
-                '0%': { opacity: 0 },
-                '100%': { opacity: 1 },
-              },
-               fadeInDown: {
-                '0%': { opacity: 0, transform: 'translateY(-10px)' },
-                '100%': { opacity: 1, transform: 'translateY(0)' },
-              }
-            }
-          },
-        },
-      }
-    </script>
   <script type="importmap">
 {
   "imports": {
+    "vite": "https://aistudiocdn.com/vite@^7.2.2",
+    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.1",
     "react": "https://aistudiocdn.com/react@^19.2.0",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.29.0",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.29.1",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/"
   }
 }
 </script>
