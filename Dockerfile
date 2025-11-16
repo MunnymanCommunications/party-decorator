@@ -4,7 +4,7 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Declare build argument for API key
-ARG API_KEY
+ARG VITE_API_KEY
 
 # Copy package files
 COPY package*.json ./
@@ -15,8 +15,8 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Set environment variable for build
-ENV API_KEY=${API_KEY}
+# Set environment variable for build (Vite requires VITE_ prefix)
+ENV VITE_API_KEY=${VITE_API_KEY}
 
 # Build the application
 RUN npm run build

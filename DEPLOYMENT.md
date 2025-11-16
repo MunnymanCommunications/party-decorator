@@ -66,11 +66,14 @@ In the Coolify environment variables section:
 
 1. Click "Add Environment Variable"
 2. Add the following:
-   - **Key**: `API_KEY`
+   - **Key**: `VITE_API_KEY`
    - **Value**: Your Google Gemini API key (paste the key you obtained earlier)
    - **Is Build Time**: ✓ (CRITICAL - Must be checked! The API key is bundled during build)
 
-**Important**: The `API_KEY` must be available at **build time** because Vite bundles it into the JavaScript during the build process. Make sure "Is Build Time" is checked in Coolify.
+**Important**:
+- The variable MUST be named `VITE_API_KEY` (Vite requires the `VITE_` prefix for client-side variables)
+- The `VITE_API_KEY` must be available at **build time** because Vite bundles it into the JavaScript during the build process
+- Make sure "Is Build Time" is checked in Coolify
 
 ### 5. Advanced Settings (Optional)
 
@@ -112,7 +115,8 @@ If you see "Nixpacks failed to detect the application type":
 
 #### API Key Issues
 
-- Ensure `API_KEY` is set correctly in environment variables
+- Ensure `VITE_API_KEY` is set correctly in environment variables (not `API_KEY`)
+- The variable name MUST have the `VITE_` prefix for Vite to expose it to the client
 - Verify the API key is valid and has proper permissions
 - Check if "Is Build Time" is checked for the environment variable
 

@@ -2,11 +2,11 @@ import { GoogleGenAI, Modality } from "@google/genai";
 import { parseDataUrl } from '../utils/fileUtils';
 import type { Source, ShoppingListItem } from '../types';
 
-if (!process.env.API_KEY) {
-    throw new Error("API_KEY environment variable is not set");
+if (!import.meta.env.VITE_API_KEY) {
+    throw new Error("VITE_API_KEY environment variable is not set");
 }
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
 
 export const editImage = async (base64Image: string, prompt: string): Promise<string> => {
     const { mimeType, data } = parseDataUrl(base64Image);

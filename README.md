@@ -33,7 +33,7 @@ View your app in AI Studio: https://ai.studio/apps/drive/1W5WDzivB8kMPEqngmCyby8
 
 3. Add your Gemini API key to `.env.local`:
    ```
-   API_KEY=your_gemini_api_key_here
+   VITE_API_KEY=your_gemini_api_key_here
    ```
 
    Get your API key from: https://makersuite.google.com/app/apikey
@@ -49,7 +49,7 @@ View your app in AI Studio: https://ai.studio/apps/drive/1W5WDzivB8kMPEqngmCyby8
 
 | Variable | Description | Required |
 |----------|-------------|----------|
-| `API_KEY` | Your Google Gemini API key | Yes |
+| `VITE_API_KEY` | Your Google Gemini API key (VITE_ prefix required) | Yes |
 
 ## Deploy to Coolify
 
@@ -58,7 +58,7 @@ For detailed deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md)
 Quick steps:
 1. Create a new resource in Coolify
 2. Connect your Git repository
-3. Add environment variable: `API_KEY=your_gemini_api_key`
+3. Add environment variable: `VITE_API_KEY=your_gemini_api_key` (check "Is Build Time")
 4. Deploy!
 
 ## Technology Stack
