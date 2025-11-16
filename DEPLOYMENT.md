@@ -68,7 +68,9 @@ In the Coolify environment variables section:
 2. Add the following:
    - **Key**: `API_KEY`
    - **Value**: Your Google Gemini API key (paste the key you obtained earlier)
-   - **Is Build Time**: ✓ (Check this box)
+   - **Is Build Time**: ✓ (CRITICAL - Must be checked! The API key is bundled during build)
+
+**Important**: The `API_KEY` must be available at **build time** because Vite bundles it into the JavaScript during the build process. Make sure "Is Build Time" is checked in Coolify.
 
 ### 5. Advanced Settings (Optional)
 
