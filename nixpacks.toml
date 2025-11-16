@@ -1,3 +1,6 @@
+[providers]
+nodejs = "20"
+
 [phases.setup]
 nixPkgs = ["nodejs_20"]
 

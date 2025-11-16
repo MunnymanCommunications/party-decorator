@@ -35,20 +35,30 @@ The application requires the following environment variable:
 
 - **Repository URL**: `https://github.com/YOUR_USERNAME/party-decorator.git` (or your repository URL)
 - **Branch**: `main` or your preferred branch
-- **Build Pack**: Select "Nixpacks" or "Dockerfile" (Nixpacks recommended for Vite)
+- **Build Pack**: Select "Dockerfile" (recommended) or "Nixpacks"
+
+**Important**: This project includes both a `Dockerfile` and `nixpacks.toml`. If you encounter build issues with Nixpacks, switch to Dockerfile in your Coolify settings.
 
 ### 3. Build Settings
 
-The project includes a `nixpacks.toml` file that configures the build automatically. Coolify/Nixpacks will:
+#### Using Dockerfile (Recommended)
 
+The project includes a `Dockerfile` that handles the build automatically:
+- Multi-stage build for optimized image size
+- Node.js 20 Alpine base image
+- Exposes port 4173
+- Automatically runs `npm install`, `npm run build`, and starts the preview server
+
+**Port Configuration**: Set to `4173` in Coolify (or it will auto-detect from Dockerfile)
+
+#### Using Nixpacks (Alternative)
+
+If using Nixpacks, the `nixpacks.toml` configures:
 - **Install Command**: `npm install`
 - **Build Command**: `npm run build`
 - **Start Command**: `npm run preview -- --host 0.0.0.0 --port ${PORT:-4173}`
-- **Port**: `4173` (default Vite preview port, or the PORT environment variable)
 
-If you need to manually configure (shouldn't be necessary):
-- Ensure the PORT environment variable is set if using a custom port
-- The app binds to `0.0.0.0` to accept external connections
+**Note**: If Nixpacks fails to detect the app type, switch to Dockerfile build pack.
 
 ### 4. Environment Variables
 
