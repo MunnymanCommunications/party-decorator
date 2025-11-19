@@ -26,14 +26,17 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Install a static file server
-RUN npm install -g serve
-
 # Copy built files from builder
 COPY --from=builder /app/dist ./dist
+
+# Copy server file
+COPY server.mjs ./
+
+# Install only express for the server
+RUN npm install express
 
 # Expose port
 EXPOSE 3000
 
-# Start the application with serve
-CMD ["serve", "-s", "dist", "-l", "3000"]
+# Start the application with our custom server
+CMD ["node", "server.mjs"]
