@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { existsSync } from 'fs';
+import { existsSync, readdirSync } from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,10 +20,21 @@ console.log('Index path:', indexPath);
 console.log('Dist exists:', existsSync(distPath));
 console.log('Index.html exists:', existsSync(indexPath));
 
+if (existsSync(distPath)) {
+  console.log('Contents of dist directory:');
+  readdirSync(distPath).forEach(file => console.log('  -', file));
+}
+
+// Add request logging middleware
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+  next();
+});
+
 // Serve static files from the dist directory with proper MIME types
 app.use(express.static(distPath, {
   setHeaders: (res, filePath) => {
-    console.log('Serving file:', filePath);
+    console.log('Serving static file:', filePath);
     if (filePath.endsWith('.js')) {
       res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
     } else if (filePath.endsWith('.mjs')) {
@@ -33,12 +44,13 @@ app.use(express.static(distPath, {
     } else if (filePath.endsWith('.html')) {
       res.setHeader('Content-Type', 'text/html; charset=utf-8');
     }
-  }
+  },
+  index: ['index.html']
 }));
 
 // Handle client-side routing - serve index.html for all routes
 app.get('/*', (req, res) => {
-  console.log('Request for:', req.path);
+  console.log('Catch-all route triggered for:', req.path);
   if (existsSync(indexPath)) {
     res.sendFile(indexPath);
   } else {
