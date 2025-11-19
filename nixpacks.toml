@@ -6,9 +6,14 @@ cmds = ["npm install"]
 
 [phases.build]
 cmds = ["npm run build"]
+dependsOn = ["install"]
 
 [start]
 cmd = "node server.mjs"
 
 [variables]
 NODE_ENV = "production"
+
+# This tells Nixpacks that VITE_API_KEY should be available during build
+[buildArgs]
+VITE_API_KEY = "$VITE_API_KEY"
