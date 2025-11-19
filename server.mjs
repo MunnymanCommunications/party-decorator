@@ -37,7 +37,7 @@ app.use(express.static(distPath, {
 }));
 
 // Handle client-side routing - serve index.html for all routes
-app.get('*', (req, res) => {
+app.get('/*', (req, res) => {
   console.log('Request for:', req.path);
   if (existsSync(indexPath)) {
     res.sendFile(indexPath);
