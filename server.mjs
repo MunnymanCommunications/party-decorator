@@ -48,9 +48,9 @@ app.use(express.static(distPath, {
   index: ['index.html']
 }));
 
-// Handle client-side routing - serve index.html for all routes
-app.get('/*', (req, res) => {
-  console.log('Catch-all route triggered for:', req.path);
+// Handle client-side routing - serve index.html for all routes that didn't match static files
+app.use((req, res) => {
+  console.log('Catch-all middleware triggered for:', req.path);
   if (existsSync(indexPath)) {
     res.sendFile(indexPath);
   } else {
